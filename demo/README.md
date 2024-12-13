@@ -15,8 +15,8 @@ Le projet "Dice" est une application construite avec Spring Boot permettant de s
 
 ### 2. Configuration du projet
 - Configurez l'application pour qu'elle utilise le port **8081**.
-- Donnez un nom (**dice**) au projet dans le fichier de configuration :
-  - Utilisez **`application.properties`** ou **`application.yml`** selon votre préférence.
+_- Donnez un nom (**dice**) au projet dans le fichier de configuration :
+  - Utilisez **`application.properties`** ou **`application.yml`** selon votre préférence._
 
 ### 3. Création de la classe `Dice`
 - Implémentez une classe représentant un dé avec les méthodes nécessaires pour effectuer un lancé.
