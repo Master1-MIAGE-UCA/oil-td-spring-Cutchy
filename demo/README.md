@@ -1,74 +1,50 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/dnW0dm4q)
-# Projet "Dice" - Gestion de lancés de dés avec Spring Boot
 
-## Description
-Le projet "Dice" est une application construite avec Spring Boot permettant de simuler des lancés de dés et de gérer un historique des résultats en base de données. Ce projet met en œuvre les concepts fondamentaux de Spring Boot, notamment l'injection de dépendances, les services RESTful, les entités JPA et les repositories.
+# Projet : Dice Roller
 
+C'est un projet de lancer de dés fait avec Spring Boot. On peut faire des lancés de dés, sauvegarder les résultats et consulter l'historique.
 
-## Étapes de réalisation
+## Fonctionnalités
 
-### 1. Création du projet Spring Boot
-- Utilisez [Spring Initializr](https://start.spring.io/) pour créer le projet.
-- Choisissez la dernière version de Spring Boot disponible (LTS).
-- Optez pour **Maven** ou **Gradle** comme outil de gestion de dépendances.
-- Ajoutez les dépendances nécessaires : **Spring Web**, **Spring Data JPA**, **H2 Database** .
+1. Lancer un seul dé.
+2. Lancer plusieurs dés.
+3. Sauvegarder les résultats des lancés dans une base de données.
+4. Consulter l'historique des lancés.
 
-### 2. Configuration du projet
-- Configurez l'application pour qu'elle utilise le port **8081**.
-_- Donnez un nom (**dice**) au projet dans le fichier de configuration :
-  - Utilisez **`application.properties`** ou **`application.yml`** selon votre préférence._
+## Endpoints REST
 
-### 3. Création de la classe `Dice`
-- Implémentez une classe représentant un dé avec les méthodes nécessaires pour effectuer un lancé.
-- Marquez cette classe avec l'annotation `@Component` pour pouvoir l'injecter au besoin.
+- **GET** `/api/dice/rollDice` : Lance un dé.
+- **GET** `/api/dice/rollDices/{X}` : Lance X dés.
+- **GET** `/api/diceLogs` : Affiche l'historique des lancés.
 
-### 4. Création de l'entité `DiceRollLog`
-- Modélisez une entité JPA `DiceRollLog` comprenant les champs suivants :
-  - **`id`** : Identifiant unique.
-  - **`diceCount`** : Nombre de dés lancés.
-  - **`results`** : Liste ou chaîne des valeurs obtenues. Il existe de nombreuses façons de stocker des valeurs simples (simple String), certaines sont plus élégantes (@ElementCollection) que d'autres, vous pouvez choisir la solution qui vous conviendra.
-  - **`timestamp`** : Horodatage du lancé.
-- Utilisez des annotations JPA comme `@Entity`, `@Id`, `@GeneratedValue`, etc.
+## Structure du projet
 
-### 5. Création du `Repository`
-- Implémentez une interface héritant de `JpaRepository<DiceRollLog, Long>` pour gérer les interactions avec la base de données.
+- **Dice** : Classe pour un dé. Gère le nombre de faces et le lancé.
+- **DiceRollLog** : Entité JPA pour les logs des lancés.
+- **DiceRollLogRepository** : Repository pour interagir avec la base.
+- **DiceService** : Service pour gérer la logique métier.
+- **DiceController** : Contrôleur REST pour lancer les dés.
+- **DiceLogController** : Contrôleur REST pour consulter les historiques.
 
-### 6. Création du contrôleur REST pour lancer les dés
-- Implémentez un contrôleur REST annoté avec `@RestController`.
-- Ajoutez les endpoints suivants :
-  - **`GET /rollDice`** : Lancer un seul dé.
-  - **`GET /rollDices/{X}`** : Lancer X dés (X étant un paramètre dynamique).
+## Base de données
 
-### 7. Création du `Service`
-- Créez un service marqué avec `@Service` contenant une méthode :
-  - Prend en paramètre le nombre de dés à lancer.
-  - Retourne les résultats des lancés au contrôleur.
-  - Enregistre l’historique des lancés dans la base via le `Repository`.
+- Une table pour les logs des lancés.
+- Une table pour stocker les résultats (lié aux logs).
 
-### 8. Contrôleur pour afficher les historiques
-- Ajoutez un autre contrôleur REST permettant d'afficher l'historique des lancés :
-  - **`GET /diceLogs`** : Retourne tous les enregistrements de `DiceRollLog` au format JSON.
+## Prérequis
 
-### 9. Tests et validation
-- Démarrez l'application et testez les endpoints.
-- Vérifiez les résultats dans la base de données et les réponses JSON.
+- Java 17+
+- Maven
+- Une base de données (H2, MySQL, etc.)
 
-### 10. (Bonus) Ajout de fonctionnalités avancées
-- **Swagger** :
-  - Ajoutez la dépendance Swagger/OpenAPI.
-  - Configurez Swagger pour documenter vos endpoints.
-  - Accédez à la documentation sur **`http://localhost:8081/swagger-ui.html`**.
-- **Lombok** :
-  - Utilisez Lombok pour simplifier les getters, setters et constructeurs de vos entités.
+## Commandes Maven
 
----
+- `mvn spring-boot:run` : Démarrer le projet.
+- `mvn clean install` : Construire le projet.
 
-## Livrables
-- Le code complet du projet, accessible via un dépôt GitHub.
-- Un fichier `README.md` décrivant les étapes réalisées
+## Exemple d'utilisation
 
-## Technologies
-- **Framework principal** : Spring Boot
-- **Base de données** : H2 
-- **Documentation API** : Swagger (bonus)
-- **Simplification de code** : Lombok (bonus)
+Pour lancer 5 dés, appelez l'URL suivante :  
+`GET http://localhost:8080/api/dice/rollDices/5`
+
+Réponse :  
+`[1, 4, 6, 3, 2]`
